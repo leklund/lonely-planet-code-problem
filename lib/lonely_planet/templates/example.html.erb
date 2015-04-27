@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <title>Lonely Planet: <%= @name %></title>
+    <link href="/static/all.css" media="screen" rel="stylesheet" type="text/css">
+  </head>
+
+  <body>
+    <div id="container">
+      <div id="header">
+        <div id="logo"></div>
+        <h1>Lonely Planet: <%= @name %></h1>
+      </div>
+
+      <div id="wrapper">
+        <div id="sidebar">
+          <div class="block">
+            <h3>Navigation</h3>
+            <div class="content">
+              <div class="inner">
+                <a href="/">Planet Earth</a>
+                <%- if !@breadcrumbs.nil? -%>
+                  <%- @breadcrumbs.each do |crumb| -%>&raquo; <a href='<%= crumb[1] %>'><%= crumb[0] %></a><%- end -%>
+                <%- end -%>
+                &raquo; <%= @name %>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div id="main">
+          <div class="block">
+            <% unless @subnav.nil? || @subnav.empty? %>
+              <div class="secondary-navigation">
+                <ul>
+                  <% @subnav.each do |item| %>
+                    <li class="first"><a href="<%= item[1] %>"><%= item[0] %></a></li>
+                  <% end %>
+                </ul>
+                <div class="clear"></div>
+              </div>
+            <% end %>
+            <div class="content">
+              <div class="inner">
+                <h2>Overview</h2>
+                <p><%= @overview %></p>
+                <% if @history %>
+                  <h2>Hisory</h2>
+                  <p><%= @history %></p>
+                  <p><a href='#'>Read more</a></p>
+                <% end %>
+                <% if @details %>
+                  <h2>Details</h2>
+                  <ul>
+                    <% @details.each do |label,categories| %>
+                      <li><a href="#"><%= label.gsub('_', ' ').capitalize %></a></li>
+                      <ul>
+                        <%- categories.each do |category| -%>
+                          <%- if category.is_a?(Hash) -%>
+                            <%- category.each do |cat, subcats| -%>
+                              <li><a href="#"><%= cat.gsub('_', ' ').capitalize %></a></li>
+                              <ul>
+                                <%- subcats.each do |sub| -%>
+                                  <li><a href="#"><%= sub.gsub('_', ' ').capitalize %></a></li>
+                                <%- end -%>
+                              </ul>
+                            <%- end -%>
+                          <%- else -%>
+                            <li><a href="#"><%= cat.gsub('_', ' ').capitalize %></a></li>
+                          <%- end -%>
+                        <%- end -%>
+                      </ul>
+                    <% end %>
+                  </ul>
+                <% end %>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
